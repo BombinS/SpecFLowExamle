@@ -2,6 +2,7 @@
 using TechTalk.SpecFlow;
 using Xunit;
 using System.Linq;
+using System.Collections.Generic;
 using TechTalk.SpecFlow.Assist;
 
 namespace GameCore.Specs
@@ -23,7 +24,7 @@ namespace GameCore.Specs
         {
             _player.Hit(damage);
         }
-        
+
         [Then(@"My health should now be (.*)")]
         public void ThenMyHealthShouldNowBe(int health)
         {
@@ -68,6 +69,52 @@ namespace GameCore.Specs
         {
             _player.CastHealingSpell();
         }
+
+        [Given(@"I have the following magical items")]
+        public void GivenIHaveTheFollowingMagicalItems(Table table)
+        {
+            // weakly type version 
+
+            //foreach(var row in table.Rows)
+            //{
+            //var name = row["item"];
+            //var value = row["value"];
+            //var power = row["power"];
+            //_player.MagicalItems.Add(new MagicalItem
+            //{
+            //    Name = name,
+            //    Value = int.Parse(value),
+            //    Power = int.Parse(power)
+            //});
+            //}
+
+            // strong type version
+
+            //IEnumerable<MagicalItem> items = table.CreateSet<MagicalItem>();
+            //_player.MagicalItems.AddRange(items);
+
+            // dynamic version
+
+            IEnumerable<dynamic> items = table.CreateDynamicSet();
+            foreach (var magicalItem in items)
+            {
+                _player.MagicalItems.Add(new MagicalItem
+                    {
+                    Name = magicalItem.name,
+                    Value = magicalItem.value,
+                    Power = magicalItem.power
+                    }
+                );
+            }
+
+        }
+
+        [Then(@"My total magical power should be (.*)")]
+        public void ThenMyTotalMagicalPowerShouldBe(int expectedPower)
+        {
+            Assert.Equal(expectedPower, _player.MagicalPower);
+        }
+
 
 
 
