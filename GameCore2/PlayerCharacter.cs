@@ -29,7 +29,7 @@ namespace GameCore
 
             var totalDamageTaken = Math.Max(damage - raceSpecificDamageResistance - DamageResistance,0);
 
-            Health -= damage;
+            Health -= totalDamageTaken;
             if (Health <= 0)
             {
                 isDead = true;
