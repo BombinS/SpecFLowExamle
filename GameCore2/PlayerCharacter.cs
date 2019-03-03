@@ -84,7 +84,7 @@ namespace GameCore
                 powerReduction = 0;
             }
 
-            var itemToReduce = MagicalItems.First(item => item.Name === itemName);
+            var itemToReduce = MagicalItems.First(item => item.Name == itemName);
             itemToReduce.Power -= powerReduction;
         }
 
